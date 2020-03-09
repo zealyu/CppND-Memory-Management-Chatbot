@@ -44,6 +44,57 @@ ChatBot::~ChatBot()
 
 //// STUDENT CODE
 ////
+ChatBot::ChatBot(const ChatBot& other)
+{
+    cout << "ChatBot copy constructor" << endl;
+    _chatLogic = other.GetChatLogicHandle();
+    _rootNode = other.GetRootNode();
+    _image = new wxBitmap(*other._image); 
+    _chatLogic->SetChatbotHandle(this);
+}
+
+ChatBot::ChatBot(ChatBot&& other)
+{
+    cout << "ChatBot move constructor" << endl;
+    _chatLogic = other.GetChatLogicHandle();
+    _rootNode = other.GetRootNode();
+    _image= other.GetImageHandle();
+    _chatLogic->SetChatbotHandle(this);
+    other.SetChatLogicHandle(nullptr);
+    other.SetRootNode(nullptr);
+    other.ResetImageHandle();
+}
+
+ChatBot& ChatBot::operator = (const ChatBot& other)
+{
+    cout << "ChatBot copy assignment operator" << endl;
+    if (this == &other)
+        return *this;
+    this->~ChatBot();
+    _chatLogic = other.GetChatLogicHandle();
+    _rootNode = other.GetRootNode();
+    _image = new wxBitmap(*other._image);
+    _chatLogic->SetChatbotHandle(this);
+    
+    return *this;
+}
+
+ChatBot& ChatBot::operator = (ChatBot&& other)
+{
+    cout << "ChatBot move assignment operator" << endl;
+    if (this == &other)
+        return *this;
+    this->~ChatBot();
+    _chatLogic = other.GetChatLogicHandle();
+    _rootNode = other.GetRootNode();
+    _image = other.GetImageHandle();
+    _chatLogic->SetChatbotHandle(this);
+    other.SetChatLogicHandle(NULL);
+    other.SetRootNode(NULL);
+    other.ResetImageHandle();
+    
+    return *this;
+}
 
 ////
 //// EOF STUDENT CODE
